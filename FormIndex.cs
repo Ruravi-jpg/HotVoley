@@ -24,10 +24,12 @@ namespace hotVoley
 			pictureBoxTitle.Parent = pictureBoxBackground;
 			pictureBoxTitle.BackColor = Color.Transparent;
 
-            string part_fecha_aux = "2000/01/01", part_id_aux = "0", mystr;
+            string part_fecha_aux = "2000-01-01", part_id_aux = "0", mystr;
+            DateTime realDate = DateTime.Parse(part_fecha_aux); //convertir la fecha al formato que postgres quiere
+            part_fecha_aux = realDate.ToString("yyyy-MM-dd");
             while (true)
             {
-                mystr  = conexion.Consultar("Partido", "part_id", "part_fecha >= '" + part_fecha_aux + "' AND part_id != " + part_id_aux + " ORDER BY part_fecha, part_hinicio");
+                mystr  = conexion.Consultar("Partido", "part_id", "part_fecha >= '" + part_fecha_aux + "' AND part_id != " + part_id_aux + " ORDER BY part_fecha");
                 if (mystr == "null")
                 {
                     break;
@@ -35,6 +37,10 @@ namespace hotVoley
 
                 part_id_aux = mystr;
                 part_fecha_aux = conexion.Consultar("Partido", "part_fecha", "part_id = " + mystr);
+
+                realDate = DateTime.Parse(part_fecha_aux); //convertir la fecha al formato que postgres quiere
+                part_fecha_aux = realDate.ToString("yyyy-MM-dd");
+
                 listBoxMatches.Items.Add(part_id_aux + ") " + part_fecha_aux);
             }
 		}

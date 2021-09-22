@@ -43,10 +43,13 @@ namespace hotVoley
 			labelInfo.BackColor = Color.White;
 			labelScoreboard.BackColor = Color.White;
 
-			part_id_actual = conexion.Consultar("Partido", "part_id", "part_id != 0 ORDER BY part_fecha, part_hinicio");
+			part_id_actual = conexion.Consultar("Partido", "part_id", "part_id != 0 ORDER BY part_fecha");
 			if (part_id_actual != "null")
             {				
 				part_fecha_actual = conexion.Consultar("Partido", "part_fecha", "part_id = " + part_id_actual);
+
+				DateTime realDate = DateTime.Parse(part_fecha_actual); //convertir la fecha al formato que postgres quiere
+				part_fecha_actual = realDate.ToString("yyyy-MM-dd");
 				UpdateData(part_id_actual);
 			}
             else
@@ -124,6 +127,9 @@ namespace hotVoley
         {
 			string part_id_aux = conexion.Consultar("Partido", "part_id", "part_fecha <= '" + part_fecha_actual + "' AND part_id != " + part_id_actual + " ORDER BY part_fecha DESC, part_hinicio DESC");
 
+			DateTime realDate = DateTime.Parse(part_fecha_actual);//convertir la fecha al formato que postgres quiere
+			part_fecha_actual = realDate.ToString("yyyy-MM-dd");
+
 			if (part_id_aux == "null")
             {
 				MessageBox.Show("Llegaste al principio de la lista.");
@@ -133,11 +139,16 @@ namespace hotVoley
 			UpdateData(part_id_aux);
 			part_id_actual = part_id_aux;
 			part_fecha_actual = conexion.Consultar("Partido", "part_fecha", "part_id = " + part_id_aux);
+
+			realDate = DateTime.Parse(part_fecha_actual); //convertir la fecha al formato que postgres quiere
+			part_fecha_actual = realDate.ToString("yyyy-MM-dd");
 		}
 
         private void buttonGoForward_Click(object sender, EventArgs e)
         {
-			string part_id_aux = conexion.Consultar("Partido", "part_id", "part_fecha >= '" + part_fecha_actual + "' AND part_id != " + part_id_actual + " ORDER BY part_fecha, part_hinicio");
+			
+			string part_id_aux = conexion.Consultar("Partido", "part_id", "part_fecha >= '" + part_fecha_actual + "' AND part_id != " + part_id_actual + " ORDER BY part_fecha");
+	
 
 			if (part_id_aux == "null")
 			{
@@ -148,6 +159,9 @@ namespace hotVoley
 			UpdateData(part_id_aux);
 			part_id_actual = part_id_aux;
 			part_fecha_actual = conexion.Consultar("Partido", "part_fecha", "part_id = " + part_id_aux);
+
+			DateTime realDate = DateTime.Parse(part_fecha_actual); //convertir la fecha al formato que postgres quiere
+			part_fecha_actual = realDate.ToString("yyyy-MM-dd");
 		}
 
 		private void buttonIndex_Click(object sender, EventArgs e)
@@ -160,6 +174,9 @@ namespace hotVoley
 			}
 			UpdateData(part_id_actual);
 			part_fecha_actual = conexion.Consultar("Partido", "part_fecha", "part_id = " + part_id_actual);
+
+			DateTime realDate = DateTime.Parse(part_fecha_actual); //convertir la fecha al formato que postgres quiere
+			part_fecha_actual = realDate.ToString("yyyy-MM-dd");
 		}
 	}
 }

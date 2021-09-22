@@ -11,7 +11,7 @@ namespace hotVoley
     public class ConexionPgsql
     {
         //Declaramos nuestra conexión:
-        private NpgsqlConnection conn = new NpgsqlConnection("Server = localhost; User Id = postgres; Password = password; Database = hotVoley");
+        private NpgsqlConnection conn = new NpgsqlConnection("Server = localhost; User Id = postgres; Password = ruravi; Database = hotVoley");
 
         public string Consultar(string tabla, string columna, string condicion)
         {
@@ -20,6 +20,8 @@ namespace hotVoley
             conn.Open();//Abrimos la conexión.
 
             NpgsqlCommand comando = new NpgsqlCommand("SELECT * FROM \"" + tabla + "\" WHERE " + condicion, conn);//Creamos el comando de consulta.
+
+
             NpgsqlDataReader resgistro = comando.ExecuteReader();//Ejecutamos el comando.
             if (resgistro.Read())//Si nuestra consulta retorna al menos 1 registro se activa este if, en caso contrario no se activa y result sigue siendo igual a "null".
             {
